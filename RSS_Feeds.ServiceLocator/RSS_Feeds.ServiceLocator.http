@@ -1,0 +1,6 @@
+@RSS_Feeds.ServiceLocator_HostAddress = http://localhost:5007
+
+GET {{RSS_Feeds.ServiceLocator_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

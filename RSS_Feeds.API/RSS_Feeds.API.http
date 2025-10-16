@@ -1,0 +1,6 @@
+@RSS_Feeds.API_HostAddress = http://localhost:5277
+
+GET {{RSS_Feeds.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
