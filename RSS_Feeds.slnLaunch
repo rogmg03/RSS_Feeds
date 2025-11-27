@@ -1,6 +1,11 @@
 [
   {
     "Name": "Nuevo perfil",
-    "Projects": []
+    "Projects": [
+      {
+        "Path": "RSS_Feeds.API\\RSS_Feeds.API.csproj",
+        "Action": "Start"
+      }
+    ]
   }
 ]
