@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RSS_Feeds.Data\RSS_Feeds.Data.csproj" />
+  </ItemGroup>
+
 </Project>
