@@ -1,0 +1,19 @@
+[
+  {
+    "Name": "Nuevo perfil",
+    "Projects": [
+      {
+        "Path": "RSS_Feeds.API\\RSS_Feeds.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "RSS_Feeds.MVC\\RSS_Feeds.MVC.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "RSS_Feeds.ServiceLocator\\RSS_Feeds.ServiceLocator.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

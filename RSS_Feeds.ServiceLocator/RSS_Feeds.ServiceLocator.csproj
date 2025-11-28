@@ -10,4 +10,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RSS_Feeds.Architecture\RSS_Feeds.Architecture.csproj" />
+    <ProjectReference Include="..\RSS_Feeds.Models\RSS_Feeds.Models.csproj" />
+  </ItemGroup>
+
 </Project>
