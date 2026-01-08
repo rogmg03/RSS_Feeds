@@ -142,9 +142,9 @@ namespace RSS_Feeds.MVC.Controllers
                 if (!response.IsSuccessStatusCode)
                 {
                     // Si falla, usar feeds sugeridos como fallback
-                    var keywordLower = keyword.ToLowerInvariant();
-                    var suggestedFeeds = GetSuggestedFeedsByKeyword(keywordLower);
-                    return Json(suggestedFeeds);
+                    var fallbackKeyword = keyword.ToLowerInvariant();
+                    var fallbackFeeds = GetSuggestedFeedsByKeyword(fallbackKeyword);
+                    return Json(fallbackFeeds);
                 }
 
                 var htmlContent = await response.Content.ReadAsStringAsync();
