@@ -1,0 +1,171 @@
+﻿@model RSS_Feeds.MVC.Models.LoginViewModel
+
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Iniciar sesión";
+}
+
+<div class="auth-page">
+    <div class="auth-shell">
+
+        <!-- HERO / BRAND -->
+        <section class="auth-hero" aria-label="Brand panel">
+            <div class="hero-content">
+
+                <div class="brand">
+                    <div class="brand-mark" aria-hidden="true">RS</div>
+                    <div class="brand-text">
+                        <div class="brand-name">RSS Feeds</div>
+                        <div class="brand-tag">Curated Stream</div>
+                    </div>
+                </div>
+
+                <h1 class="hero-title">Tu timeline de conocimiento.</h1>
+                <p class="hero-subtitle">
+                    Sigue fuentes, guarda lo que importa y construye tu propia red de información.
+                </p>
+
+                <div class="hero-bullets" aria-label="Highlights">
+                    <div class="bullet">
+                        <span class="dot" aria-hidden="true"></span>
+                        <span>Descubre feeds por tema y popularidad</span>
+                    </div>
+                    <div class="bullet">
+                        <span class="dot" aria-hidden="true"></span>
+                        <span>Guarda artículos con un “like”</span>
+                    </div>
+                    <div class="bullet">
+                        <span class="dot" aria-hidden="true"></span>
+                        <span>Control total: follow / unfollow en un toque</span>
+                    </div>
+                </div>
+
+                <div class="hero-footer">
+                    <span class="pill">Privado</span>
+                    <span class="pill">Rápido</span>
+                    <span class="pill">Minimal</span>
+                </div>
+
+            </div>
+
+            <div class="hero-glow" aria-hidden="true"></div>
+        </section>
+
+        <!-- FORM -->
+        <section class="auth-card" aria-label="Login form">
+            <div class="card-header">
+                <h2 class="card-title">Bienvenido de vuelta</h2>
+                <p class="card-subtitle">
+                    Inicia sesión para ver tu stream personalizado.
+                </p>
+            </div>
+
+            <form method="post" class="auth-form" novalidate>
+
+                <!-- EMAIL -->
+                <div class="field">
+                    <label class="label" asp-for="Email">Email</label>
+                    <div class="input-wrap">
+                        <span class="icon" aria-hidden="true">
+                            <!-- mail icon -->
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M4 7.5A2.5 2.5 0 0 1 6.5 5h11A2.5 2.5 0 0 1 20 7.5v9A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5v-9Z" stroke="currentColor" stroke-width="1.7" />
+                                <path d="M6.5 7.5 12 12l5.5-4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </span>
+
+                        <input class="input"
+                               asp-for="Email"
+                               type="email"
+                               autocomplete="email"
+                               placeholder="tu@email.com"
+                               autofocus />
+                    </div>
+                </div>
+
+                <!-- PASSWORD -->
+                <div class="field">
+                    <div class="label-row">
+                        <label class="label" asp-for="Password">Password</label>
+                        <a class="link subtle" href="#" tabindex="-1">¿Olvidaste tu contraseña?</a>
+                    </div>
+
+                    <div class="input-wrap">
+                        <span class="icon" aria-hidden="true">
+                            <!-- lock icon -->
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M7.5 10V8.2a4.5 4.5 0 0 1 9 0V10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+                                <path d="M6.8 10h10.4A2.8 2.8 0 0 1 20 12.8v4.4A2.8 2.8 0 0 1 17.2 20H6.8A2.8 2.8 0 0 1 4 17.2v-4.4A2.8 2.8 0 0 1 6.8 10Z" stroke="currentColor" stroke-width="1.7" />
+                            </svg>
+                        </span>
+
+                        <input class="input"
+                               asp-for="Password"
+                               type="password"
+                               autocomplete="current-password"
+                               placeholder="Tu contraseña"
+                               id="passwordInput" />
+
+                        <button type="button"
+                                class="icon-btn"
+                                aria-label="Mostrar u ocultar contraseña"
+                                id="togglePassword">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7Z" stroke="currentColor" stroke-width="1.7" />
+                                <path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z" stroke="currentColor" stroke-width="1.7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ERROR -->
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="alert alert-danger" role="alert">
+                        <div class="alert-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M12 9v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                                <path d="M12 17.6h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+                                <path d="M10.3 4.7a2 2 0 0 1 3.4 0l8 14A2 2 0 0 1 20 21H4a2 2 0 0 1-1.7-3.3l8-14Z" stroke="currentColor" stroke-width="1.7" />
+                            </svg>
+                        </div>
+                        <div class="alert-text">@Model.ErrorMessage</div>
+                    </div>
+                }
+
+                <!-- SUBMIT -->
+                <button type="submit" class="btn-primary">
+                    <span>Entrar</span>
+                    <span class="btn-arrow" aria-hidden="true">→</span>
+                </button>
+
+                <div class="divider">
+                    <span>o</span>
+                </div>
+
+                <div class="meta-row">
+                    <span>¿No tienes cuenta?</span>
+                    <a class="link" asp-controller="Account" asp-action="Register">
+                        Crear cuenta
+                    </a>
+                </div>
+
+            </form>
+        </section>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const btn = document.getElementById("togglePassword");
+            const input = document.getElementById("passwordInput");
+            if (!btn || !input) return;
+
+            btn.addEventListener("click", function () {
+                input.type = input.type === "password" ? "text" : "password";
+            });
+        })();
+    </script>
+}

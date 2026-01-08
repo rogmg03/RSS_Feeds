@@ -1,8 +1,49 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model List<RSS_Feeds.MVC.Models.FeedTimelineItemViewModel>
+
+@{
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+
+    @if (ViewBag.HasFeeds == false)
+    {
+        <section class="empty-feed">
+            <div class="empty-illustration">📰</div>
+
+            <h1 class="empty-title">Tu feed está vacío</h1>
+
+            <p class="empty-text">
+                Aún no sigues ningún feed.
+                Empieza a construir tu timeline siguiendo fuentes que te interesen.
+            </p>
+
+            <div class="empty-actions">
+                <a asp-controller="Feeds"
+                   asp-action="Discover"
+                   class="btn-primary">
+                    Buscar feeds
+                </a>
+
+                <a asp-controller="Feeds"
+                   asp-action="Popular"
+                   class="btn-secondary">
+                    Explorar populares
+                </a>
+            </div>
+        </section>
+    }
+    else
+    {
+        <section class="feed-list-grid">
+            @foreach (var item in Model)
+            {
+                @await Html.PartialAsync(
+                "~/Views/Shared/Components/FeedCard/_FeedCard.cshtml",
+                item
+                )
+                }
+        </section>
+    }
+
+

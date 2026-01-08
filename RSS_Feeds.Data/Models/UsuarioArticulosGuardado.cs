@@ -15,7 +15,7 @@ public partial class UsuarioArticulosGuardado
 
     public string? Notas { get; set; }
 
-    public virtual Articulo Articulo { get; set; } = null!;
+    public virtual Articulo? Articulo { get; set; } = null!;
 
-    public virtual Usuario Usuario { get; set; } = null!;
+    public virtual Usuario? Usuario { get; set; } = null!;
 }

@@ -36,6 +36,7 @@ namespace RSS_Feeds.ServiceLocator.Services
         {
             var url = configuration.GetStringFromAppSettings("APIS", "UsuarioFeed");
             var body = JsonProvider.Serialize(dto);
+
             var response = await restProvider.PostAsync(url, body);
 
             var s = response?.Trim().Trim('"');

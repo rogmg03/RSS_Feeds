@@ -1,0 +1,69 @@
+﻿/* ===============================
+   RESET & BASE
+================================ */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Evita scroll global */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+
+}
+
+/* Base typography */
+body {
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color: var(--text-primary);
+    background: var(--bg-page);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Links */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Inputs & buttons */
+input,
+button,
+textarea,
+select {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+/* Buttons reset */
+button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* Lists */
+ul,
+ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Prevent horizontal scroll bugs */
+body {
+    overflow-x: hidden;
+}

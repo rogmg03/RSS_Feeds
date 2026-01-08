@@ -10,6 +10,8 @@ public interface IUsuarioBusiness
     Task<IEnumerable<Usuario>> GetByIdAsync(int id); // GET {id}
     Task<bool> SaveAsync(Usuario entity);            // POST/PUT
     Task<bool> DeleteAsync(int id);                  // DELETE {id}
+
+    Task<Usuario?> GetByEmailAsync(string email);
 }
 
 public class UsuarioBusiness(IRepositoryUsuario repo) : IUsuarioBusiness
@@ -24,6 +26,9 @@ public class UsuarioBusiness(IRepositoryUsuario repo) : IUsuarioBusiness
         var item = await _repo.FindAsync(id);
         return item is null ? Enumerable.Empty<Usuario>() : new[] { item };
     }
+
+    public Task<Usuario?> GetByEmailAsync(string email)
+        => _repo.FindByEmailAsync(email);
 
     public Task<bool> SaveAsync(Usuario entity)
         => _repo.CheckBeforeSavingAsync(entity);

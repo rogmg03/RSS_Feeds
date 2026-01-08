@@ -1,6 +1,7 @@
 using RSS_Feeds.Architecture;
 using RSS_Feeds.Architecture.Providers;
 using RSS_Feeds.ServiceLocator.Services;
+using RSS_Feeds.ServiceLocator.Services.Contracts;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -20,6 +21,7 @@ builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IArticuloService, ArticuloService>();
 builder.Services.AddScoped<IUsuarioFeedService, UsuarioFeedService>();
 builder.Services.AddScoped<IUsuarioArticulosGuardadoService, UsuarioArticulosGuardadoService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services
     .AddControllers()

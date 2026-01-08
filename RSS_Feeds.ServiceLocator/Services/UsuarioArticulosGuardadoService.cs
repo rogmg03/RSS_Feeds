@@ -9,7 +9,7 @@ namespace RSS_Feeds.ServiceLocator.Services
     public interface IUsuarioArticulosGuardadoService : IService<UsuarioArticulosGuardadoDTO>
     {
         Task<IEnumerable<UsuarioArticulosGuardadoDTO>> GetDataByIdAsync(int id);
-        Task<bool> CreateAsync(UsuarioArticulosGuardadoDTO dto);
+        Task<int> CreateAsync(UsuarioArticulosGuardadoDTO dto);
         Task<bool> UpdateAsync(int id, UsuarioArticulosGuardadoDTO dto);
         Task<bool> DeleteAsync(int id);
     }
@@ -32,14 +32,14 @@ namespace RSS_Feeds.ServiceLocator.Services
             return await JsonProvider.DeserializeAsync<IEnumerable<UsuarioArticulosGuardadoDTO>>(response);
         }
 
-        public async Task<bool> CreateAsync(UsuarioArticulosGuardadoDTO dto)
+        public async Task<int> CreateAsync(UsuarioArticulosGuardadoDTO dto)
         {
-            var url = configuration.GetStringFromAppSettings("APIS", "UsuarioArticulosGuardado");
+            //var url = configuration.GetStringFromAppSettings("APIS", "UsuarioArticulosGuardados");
+            var url = "https://localhost:7070/api/UsuarioArticulosGuardadoApi/";
             var body = JsonProvider.Serialize(dto);
-            var response = await restProvider.PostAsync(url, body);
 
-            var s = response?.Trim().Trim('"');
-            return bool.TryParse(s, out var ok) && ok;
+            var response = await restProvider.PostAsync(url, body);
+            return int.Parse(response!.Trim());
         }
 
         public async Task<bool> UpdateAsync(int id, UsuarioArticulosGuardadoDTO dto)

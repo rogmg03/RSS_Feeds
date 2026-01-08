@@ -30,8 +30,13 @@ namespace RSS_Feeds.Data.Repositories
             return await UpsertAsync(entity, exists);
         }
 
-        public new async Task<bool> ExistsAsync(UsuarioFeed entity)
-            => await DbContext.UsuarioFeeds.AnyAsync(x => x.Id == entity.Id);
+        public async Task<bool> ExistsAsync(UsuarioFeed entity)
+        {
+            return await DbContext.UsuarioFeeds.AnyAsync(x =>
+                x.UsuarioId == entity.UsuarioId &&
+                x.FeedId == entity.FeedId
+            );
+        }
 
         public Task<bool> UpsertAsync(UsuarioFeed entity, bool isUpdating) => base.UpsertAsync(entity, isUpdating);
         public Task<bool> CreateAsync(UsuarioFeed entity) => base.CreateAsync(entity);

@@ -25,7 +25,7 @@ public partial class Articulo
 
     public DateTime? CreadoEn { get; set; }
 
-    public virtual Feed Feed { get; set; } = null!;
+    public virtual Feed? Feed { get; set; } = null!;
 
-    public virtual ICollection<UsuarioArticulosGuardado> UsuarioArticulosGuardados { get; set; } = new List<UsuarioArticulosGuardado>();
+    public virtual ICollection<UsuarioArticulosGuardado>? UsuarioArticulosGuardados { get; set; } = new List<UsuarioArticulosGuardado>();
 }

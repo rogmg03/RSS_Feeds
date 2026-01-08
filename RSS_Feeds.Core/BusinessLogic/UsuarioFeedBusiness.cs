@@ -31,8 +31,23 @@ public class UsuarioFeedBusiness(IRepositoryUsuarioFeed repo) : IUsuarioFeedBusi
         return all.Where(x => x.UsuarioId == usuarioId);
     }
 
-    public Task<bool> SaveAsync(UsuarioFeed entity)
-        => _repo.CheckBeforeSavingAsync(entity);
+    public async Task<bool> SaveAsync(UsuarioFeed entity)
+    {
+        if (entity == null)
+            return false;
+
+        // Dominio: valores automáticos
+        if (entity.Id == 0)
+        {
+            entity.CreadoEn = DateTime.UtcNow;
+        }
+
+        // (opcional pero recomendado)
+        if (entity.UsuarioId <= 0 || entity.FeedId <= 0)
+            return false;
+
+        return await _repo.CheckBeforeSavingAsync(entity);
+    }
 
     public Task<bool> DeleteAsync(int id)
         => _repo.DeleteAsync(id);

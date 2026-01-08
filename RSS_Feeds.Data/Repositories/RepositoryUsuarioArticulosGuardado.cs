@@ -6,7 +6,7 @@ namespace RSS_Feeds.Data.Repositories
     public interface IRepositoryUsuarioArticulosGuardado
     {
         Task<bool> UpsertAsync(UsuarioArticulosGuardado entity, bool isUpdating);
-        Task<bool> CreateAsync(UsuarioArticulosGuardado entity);
+        Task<int> CreateAndReturnIdAsync(UsuarioArticulosGuardado entity);
         Task<bool> DeleteAsync(UsuarioArticulosGuardado entity);
         Task<bool> DeleteAsync(int id);
         Task<IEnumerable<UsuarioArticulosGuardado>> ReadAsync();
@@ -39,8 +39,12 @@ namespace RSS_Feeds.Data.Repositories
         public Task<bool> UpsertAsync(UsuarioArticulosGuardado entity, bool isUpdating)
             => base.UpsertAsync(entity, isUpdating);
 
-        public Task<bool> CreateAsync(UsuarioArticulosGuardado entity)
-            => base.CreateAsync(entity);
+        public async Task<int> CreateAndReturnIdAsync(UsuarioArticulosGuardado entity)
+        {
+            DbContext.UsuarioArticulosGuardados.Add(entity);
+            await DbContext.SaveChangesAsync();
+            return entity.Id; // EF lo rellena automáticamente
+        }
 
         public Task<bool> UpdateAsync(UsuarioArticulosGuardado entity)
             => base.UpdateAsync(entity);

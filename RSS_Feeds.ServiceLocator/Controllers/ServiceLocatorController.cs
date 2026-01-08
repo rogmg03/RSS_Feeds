@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSS_Feeds.Models.DTOs;
 using RSS_Feeds.ServiceLocator.Services;
+using RSS_Feeds.ServiceLocator.Services.Contracts;
 
 namespace RSS_Feeds.ServiceLocator.Controllers
 {
@@ -14,19 +15,22 @@ namespace RSS_Feeds.ServiceLocator.Controllers
         private readonly IArticuloService _articuloService;
         private readonly IUsuarioFeedService _usuarioFeedService;
         private readonly IUsuarioArticulosGuardadoService _usuarioArticulosGuardadoService;
+        private readonly IAuthService _authService;
 
         public ServiceLocatorController(
             IFeedService feedService,
             IUsuarioService usuarioService,
             IArticuloService articuloService,
             IUsuarioFeedService usuarioFeedService,
-            IUsuarioArticulosGuardadoService usuarioArticulosGuardadoService)
+            IUsuarioArticulosGuardadoService usuarioArticulosGuardadoService,
+            IAuthService authService)
         {
             _feedService = feedService;
             _usuarioService = usuarioService;
             _articuloService = articuloService;
             _usuarioFeedService = usuarioFeedService;
             _usuarioArticulosGuardadoService = usuarioArticulosGuardadoService;
+            _authService = authService;
         }
 
         // ---------- FEEDS ----------
@@ -81,7 +85,7 @@ namespace RSS_Feeds.ServiceLocator.Controllers
             => _articuloService.GetDataByIdAsync(id);
 
         [HttpPost("articulos")]
-        public Task<bool> CreateArticulo([FromBody] ArticuloDTO dto)
+        public Task<int> CreateArticulo([FromBody] ArticuloDTO dto)
             => _articuloService.CreateAsync(dto);
 
         [HttpPut("articulos/{id:int}")]
@@ -103,7 +107,7 @@ namespace RSS_Feeds.ServiceLocator.Controllers
 
         [HttpPost("usuario-feed")]
         public Task<bool> CreateUsuarioFeed([FromBody] UsuarioFeedDTO dto)
-            => _usuarioFeedService.CreateAsync(dto);
+    => _usuarioFeedService.CreateAsync(dto);
 
         [HttpPut("usuario-feed/{id:int}")]
         public Task<bool> UpdateUsuarioFeed(int id, [FromBody] UsuarioFeedDTO dto)
@@ -123,8 +127,15 @@ namespace RSS_Feeds.ServiceLocator.Controllers
             => _usuarioArticulosGuardadoService.GetDataByIdAsync(id);
 
         [HttpPost("usuario-articulos-guardados")]
-        public Task<bool> CreateUsuarioArticuloGuardado([FromBody] UsuarioArticulosGuardadoDTO dto)
-            => _usuarioArticulosGuardadoService.CreateAsync(dto);
+        public async Task<ActionResult<int>> CreateUsuarioArticuloGuardado(
+    [FromBody] UsuarioArticulosGuardadoDTO dto)
+        {
+            var id = await _usuarioArticulosGuardadoService.CreateAsync(dto);
+            if (id <= 0)
+                return BadRequest();
+
+            return Ok(id);
+        }
 
         [HttpPut("usuario-articulos-guardados/{id:int}")]
         public Task<bool> UpdateUsuarioArticuloGuardado(int id, [FromBody] UsuarioArticulosGuardadoDTO dto)
@@ -133,6 +144,28 @@ namespace RSS_Feeds.ServiceLocator.Controllers
         [HttpDelete("usuario-articulos-guardados/{id:int}")]
         public Task<bool> DeleteUsuarioArticuloGuardado(int id)
             => _usuarioArticulosGuardadoService.DeleteAsync(id);
+
+
+        // ---------- AUTH  ----------
+        [HttpPost("auth/login")]
+        public async Task<ActionResult<LoginResponseDTO>> Login(LoginRequestDTO dto)
+        {
+            var result = await _authService.LoginAsync(dto);
+            if (result == null)
+                return Unauthorized();
+
+            return Ok(result);
+        }
+
+        [HttpPost("auth/register")]
+        public async Task<ActionResult<bool>> Register(RegisterRequestDTO dto)
+        {
+            var ok = await _authService.RegisterAsync(dto);
+            if (!ok)
+                return BadRequest(false);
+
+            return Ok(true);
+        }
 
     }
 }

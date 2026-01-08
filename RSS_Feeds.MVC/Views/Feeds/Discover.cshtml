@@ -1,0 +1,157 @@
+﻿@model List<RSS_Feeds.MVC.Models.FeedDiscoverViewModel>
+
+@{
+    ViewData["Title"] = "Descubrir feeds";
+}
+
+<div class="content">
+
+    <div class="page-header">
+        <h1>Descubrir feeds</h1>
+        <p class="page-subtitle">
+            Explora fuentes y empieza a construir tu timeline personal.
+        </p>
+    </div>
+
+    <div class="feed-search">
+        <input type="text"
+               id="feedSearchInput"
+               placeholder="Buscar feeds por nombre o tema..."
+               aria-label="Buscar feeds" />
+        <button type="button"
+                class="btn-primary js-add-feed-open">
+            + Agregar Feed
+        </button>
+    </div>
+
+    <!-- RSS Finder Results -->
+    <div id="rssFinderResults" class="rss-finder-results hidden">
+        <div class="rss-finder-header">
+            <h3>Feeds encontrados</h3>
+            <button type="button" id="clearSearchResults" class="btn-secondary btn-small">Limpiar búsqueda</button>
+        </div>
+        <div id="rssFinderLoading" class="rss-finder-loading" style="display: none;">
+            <p>Buscando feeds...</p>
+        </div>
+        <div id="rssFinderFeedGrid" class="feed-discover-grid"></div>
+        <div id="rssFinderError" class="rss-finder-error" style="display: none;"></div>
+    </div>
+
+    <div class="feed-discover-grid">
+
+        @foreach (var feed in Model)
+        {
+            <article class="feed-discover-card">
+
+                <div class="feed-discover-header">
+                    <div class="feed-avatar">
+                        @(
+                                            !string.IsNullOrWhiteSpace(feed.Titulo) && feed.Titulo.Length >= 2
+                                            ? feed.Titulo.Substring(0, 2).ToUpper()
+                                            : "FD"
+                                            )
+                </div>
+
+                    <div class="feed-info">
+                        <div class="feed-name">@feed.Titulo</div>
+                        <div class="feed-url">@feed.Url</div>
+                    </div>
+                </div>
+
+                <p class="feed-description">
+                    @feed.Descripcion
+                </p>
+
+            @if (!feed.IsFollowed)
+                {
+                    <button type="button"
+                            class="btn-follow js-follow-open"
+                            data-feed-id="@feed.Id"
+                            data-feed-title="@feed.Titulo">
+                        Seguir
+                    </button>
+                }
+                else
+                {
+                    <form asp-action="Unfollow" method="post">
+                        <input type="hidden"
+                               name="usuarioFeedId"
+                               value="@feed.UsuarioFeedId" />
+                        <button type="submit"
+                                class="btn-follow following">
+                            Siguiendo
+                        </button>
+                    </form>
+                }
+
+            </article>
+        }
+
+    </div>
+</div>
+
+<!-- FOLLOW MODAL -->
+<div id="followModal" class="modal hidden">
+    <div class="modal-card">
+        <h3>Seguir feed</h3>
+
+        <p id="followFeedTitle" class="modal-subtitle"></p>
+
+        <input type="text"
+               id="feedAlias"
+               placeholder="Alias (opcional)"
+               maxlength="255" />
+
+        <div class="modal-actions">
+            <button type="button" class="btn-primary" id="confirmFollowBtn">
+                Seguir
+            </button>
+            <button type="button" class="btn-secondary" id="cancelFollowBtn">
+                Cancelar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ADD FEED MODAL -->
+<div id="addFeedModal" class="modal hidden">
+    <div class="modal-card">
+        <h3>Agregar feed</h3>
+
+        <div id="addFeedError" class="modal-error" style="display: none;"></div>
+
+        <input type="url"
+               id="feedUrl"
+               placeholder="URL del feed RSS *"
+               required />
+
+        <input type="text"
+               id="feedTitle"
+               placeholder="Título (opcional)" />
+
+        <textarea id="feedDescription"
+                  placeholder="Descripción (opcional)"
+                  rows="3"></textarea>
+
+        <div style="display: flex; gap: 10px;">
+            <input type="text"
+                   id="feedCategory"
+                   placeholder="Categoría (opcional)"
+                   style="flex: 1;" />
+
+            <input type="text"
+                   id="feedLanguage"
+                   placeholder="Idioma (opcional, ej: es, en)"
+                   style="flex: 1;" />
+        </div>
+
+        <div class="modal-actions">
+            <button type="button" class="btn-primary" id="confirmAddFeedBtn">
+                Agregar
+            </button>
+            <button type="button" class="btn-secondary" id="cancelAddFeedBtn">
+                Cancelar
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+﻿@model RSS_Feeds.MVC.Models.FeedTimelineItemViewModel
+
+<article class="feed-card">
+    @if (!string.IsNullOrEmpty(Model.Imagen))
+    {
+        <div class="feed-card-image-wrapper">
+            <img src="@Model.Imagen"
+                 alt="@Model.Titulo"
+                 class="feed-card-image" />
+        </div>
+    }
+
+    <div class="feed-card-body">
+        <h2 class="feed-card-title">
+            @Model.Titulo
+        </h2>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Descripcion))
+        {
+            <p class="feed-card-description">
+                @Model.Descripcion
+            </p>
+        }
+
+        <div class="feed-card-meta">
+            <span class="feed-source">
+                @Model.FeedTitulo
+            </span>
+
+            @if (Model.FechaPublicacion.HasValue)
+            {
+                <span class="feed-date">
+                    @Model.FechaPublicacion.Value.ToString("dd MMM yyyy")
+                </span>
+            }
+        </div>
+
+        <div class="feed-card-actions">
+            <button class="like-btn @(Model.IsLiked ? "liked" : "")"
+                    data-feed-id="@Model.FeedId"
+                    data-titulo="@Model.Titulo"
+                    data-link="@Model.FeedUrl"
+                    data-descripcion="@Model.Descripcion"
+                    data-contenido="@Model.Contenido"
+                    data-autor="@Model.Autor"
+                    data-imagen="@Model.Imagen"
+                    data-fecha="@Model.FechaPublicacion?.ToString("o")">
+                @(Model.IsLiked ? "❤️" : "🤍")
+            </button>
+
+            <a href="@Model.Link"
+               target="_blank"
+               rel="noopener"
+               class="btn-read">
+                Leer
+            </a>
+        </div>
+    </div>
+</article>

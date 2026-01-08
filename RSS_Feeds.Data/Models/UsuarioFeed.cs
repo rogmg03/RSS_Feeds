@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace RSS_Feeds.Data.Models;
 
@@ -15,7 +16,8 @@ public partial class UsuarioFeed
 
     public DateTime? CreadoEn { get; set; }
 
-    public virtual Feed Feed { get; set; } = null!;
-
-    public virtual Usuario Usuario { get; set; } = null!;
+    [JsonIgnore]
+    public virtual Feed? Feed { get; set; } = null!;
+    [JsonIgnore]
+    public virtual Usuario? Usuario { get; set; } = null!;
 }

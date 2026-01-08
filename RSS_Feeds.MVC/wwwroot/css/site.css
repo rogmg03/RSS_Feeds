@@ -1,22 +1,98 @@
-html {
-  font-size: 14px;
+@import url("tokens.css");
+@import url("base.css");
+@import url("layout.css");
+@import url("components.css");
+@import url("auth.css");
+
+
+/* EMPTY FEED STATE */
+
+.empty-feed {
+    max-width: 680px;
+    margin: 80px auto;
+    text-align: center;
+    background: var(--bg-card);
+    padding: 48px 40px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-card);
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.empty-icon {
+    font-size: 56px;
+    margin-bottom: 16px;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.empty-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 12px;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.empty-subtitle {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 28px;
 }
 
-body {
-  margin-bottom: 60px;
+.empty-actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 36px;
+}
+
+.btn-secondary {
+    padding: 12px 18px;
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+    background: transparent;
+    color: var(--text-primary);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background .15s ease;
+}
+
+    .btn-secondary:hover {
+        background: rgba(0,0,0,.04);
+    }
+
+.empty-guide {
+    border-top: 1px solid var(--border-light);
+    padding-top: 28px;
+}
+
+    .empty-guide h3 {
+        font-size: 16px;
+        margin-bottom: 18px;
+    }
+
+    .empty-guide ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .empty-guide li {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        justify-content: center;
+        color: var(--text-secondary);
+        font-size: 14px;
+    }
+
+.step {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient( 135deg, var(--brand-primary), var(--brand-accent) );
+    color: white;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 13px;
 }

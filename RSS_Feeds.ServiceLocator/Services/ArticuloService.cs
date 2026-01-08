@@ -9,7 +9,7 @@ namespace RSS_Feeds.ServiceLocator.Services
     public interface IArticuloService : IService<ArticuloDTO>
     {
         Task<IEnumerable<ArticuloDTO>> GetDataByIdAsync(int id);
-        Task<bool> CreateAsync(ArticuloDTO dto);
+        Task<int> CreateAsync(ArticuloDTO dto);
         Task<bool> UpdateAsync(int id, ArticuloDTO dto);
         Task<bool> DeleteAsync(int id);
     }
@@ -32,14 +32,19 @@ namespace RSS_Feeds.ServiceLocator.Services
             return await JsonProvider.DeserializeAsync<IEnumerable<ArticuloDTO>>(response);
         }
 
-        public async Task<bool> CreateAsync(ArticuloDTO dto)
+        public async Task<int> CreateAsync(ArticuloDTO dto)
         {
             var url = configuration.GetStringFromAppSettings("APIS", "Articulo");
             var body = JsonProvider.Serialize(dto);
+
             var response = await restProvider.PostAsync(url, body);
 
-            var s = response?.Trim().Trim('"');
-            return bool.TryParse(s, out var ok) && ok;
+            if (string.IsNullOrWhiteSpace(response))
+                return 0;
+
+            return int.TryParse(response.Trim(), out var id)
+                ? id
+                : 0;
         }
 
         public async Task<bool> UpdateAsync(int id, ArticuloDTO dto)

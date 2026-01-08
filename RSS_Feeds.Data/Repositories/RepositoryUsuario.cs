@@ -11,6 +11,7 @@ namespace RSS_Feeds.Data.Repositories
         Task<bool> DeleteAsync(int id);
         Task<IEnumerable<Usuario>> ReadAsync();
         Task<Usuario?> FindAsync(int id);
+        Task<Usuario?> FindByEmailAsync(string email);
         Task<bool> UpdateAsync(Usuario entity);
         Task<bool> UpdateManyAsync(IEnumerable<Usuario> entities);
         Task<bool> ExistsAsync(Usuario entity);
@@ -23,15 +24,24 @@ namespace RSS_Feeds.Data.Repositories
 
         public async Task<bool> CheckBeforeSavingAsync(Usuario entity)
         {
-            // Validaciones sencillas de dominio
-            if (string.IsNullOrWhiteSpace(entity.Email))
+            // Validaciones mínimas
+            if (entity == null) return false;
+            if (string.IsNullOrWhiteSpace(entity.Email)) return false;
+
+            // Normaliza email (evita duplicados por mayúsculas/espacios)
+            entity.Email = entity.Email.Trim().ToLowerInvariant();
+
+            // Validación de duplicado por email (solo cuando se crea o cuando se cambia email)
+            var existingByEmail = await FindByEmailAsync(entity.Email);
+
+            // Si existe otro usuario con el mismo email (id distinto), bloquea
+            if (existingByEmail != null && existingByEmail.Id != entity.Id)
                 return false;
 
-            // Aquí podrías setear valores por defecto
-            // entity.Nombre ??= "Sin nombre";
+            // Determina si es update o create por PK
+            var existsById = await DbContext.Usuarios.AnyAsync(x => x.Id == entity.Id);
 
-            var exists = await ExistsAsync(entity);
-            return await UpsertAsync(entity, exists);
+            return await UpsertAsync(entity, existsById);
         }
 
         // === Existencia por PK ===
@@ -45,6 +55,16 @@ namespace RSS_Feeds.Data.Repositories
         public Task<bool> UpdateManyAsync(IEnumerable<Usuario> entities) => base.UpdateManyAsync(entities);
         public Task<IEnumerable<Usuario>> ReadAsync() => base.ReadAsync();
         public new Task<Usuario?> FindAsync(int id) => base.FindAsync(id);
+        public async Task<Usuario?> FindByEmailAsync(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email)) return null;
+
+            var normalized = email.Trim().ToLowerInvariant();
+
+            return await DbContext.Usuarios
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Email.ToLower() == normalized);
+        }
         public Task<bool> DeleteAsync(Usuario entity) => base.DeleteAsync(entity);
 
         // Helper por id (comodidad para el Business)

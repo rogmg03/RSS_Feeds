@@ -11,8 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RSS_Feeds.Architecture\RSS_Feeds.Architecture.csproj" />
     <ProjectReference Include="..\RSS_Feeds.Core\RSS_Feeds.Core.csproj" />
     <ProjectReference Include="..\RSS_Feeds.Data\RSS_Feeds.Data.csproj" />
+    <ProjectReference Include="..\RSS_Feeds.Models\RSS_Feeds.Models.csproj" />
   </ItemGroup>
 
 </Project>

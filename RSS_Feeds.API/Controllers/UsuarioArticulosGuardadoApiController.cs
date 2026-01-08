@@ -34,23 +34,27 @@ namespace RSS_Feeds.API.Controllers
 
         // POST: api/UsuarioArticulosGuardadoApi
         [HttpPost]
-        public Task<bool> Post([FromBody] UsuarioArticulosGuardado entity)
+        public async Task<ActionResult<int>> Post([FromBody] UsuarioArticulosGuardado entity)
         {
-            return usuarioArticulosGuardadoBusiness.SaveAsync(entity);
+            var id = await usuarioArticulosGuardadoBusiness.SaveAndReturnIdAsync(entity);
+            if (id <= 0)
+                return BadRequest();
+
+            return Ok(id);
         }
 
         // PUT: api/UsuarioArticulosGuardadoApi/5
         [HttpPut("{id}")]
-        public async Task<bool> Put(int id, [FromBody] UsuarioArticulosGuardado entity)
+        public async Task<int> Put(int id, [FromBody] UsuarioArticulosGuardado entity)
         {
-            if (entity is null) return false;
+            if (entity is null) return 0;
 
             if (entity.Id == 0)
                 entity.Id = id;
             else if (entity.Id != id)
-                return false;
+                return 0;
 
-            return await usuarioArticulosGuardadoBusiness.SaveAsync(entity);
+            return await usuarioArticulosGuardadoBusiness.SaveAndReturnIdAsync(entity);
         }
 
         // DELETE: api/UsuarioArticulosGuardadoApi/5
