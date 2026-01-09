@@ -518,3 +518,141 @@ document.addEventListener("click", async (e) => {
         loadExistingFeeds();
     }
 })();
+
+// =========================
+// BOTTOM NAV ACTIVE ITEM
+// =========================
+(function() {
+    function setActiveNavItem() {
+        const currentPath = window.location.pathname.toLowerCase();
+        const navItems = document.querySelectorAll('.nav-item, .bottom-nav-item');
+        
+        navItems.forEach(item => {
+            item.classList.remove('active');
+            const href = item.getAttribute('href');
+            if (!href) return;
+            
+            try {
+                const url = new URL(href, window.location.origin);
+                const itemPath = url.pathname.toLowerCase();
+                
+                // Marcar como activo si la ruta coincide
+                if (itemPath === currentPath) {
+                    item.classList.add('active');
+                } else if (currentPath === '/' && (itemPath === '/' || itemPath.includes('/home'))) {
+                    item.classList.add('active');
+                } else if (currentPath.includes('/feeds/discover') && itemPath.includes('/feeds/discover')) {
+                    item.classList.add('active');
+                } else if (currentPath.includes('/feeds/saved') && itemPath.includes('/feeds/saved')) {
+                    item.classList.add('active');
+                } else if (currentPath.includes('/account/logout') && itemPath.includes('/account/logout')) {
+                    item.classList.add('active');
+                }
+            } catch (e) {
+                // Si falla el parsing de URL, usar comparación simple
+                const itemPath = href.toLowerCase();
+                if (currentPath.includes(itemPath.replace(/^\/|\/$/g, ''))) {
+                    item.classList.add('active');
+                }
+            }
+        });
+    }
+    
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", setActiveNavItem);
+    } else {
+        setActiveNavItem();
+    }
+})();
+
+// =========================
+// SIDEBAR TOGGLE
+// =========================
+(function() {
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    
+    if (!sidebar || !sidebarToggle) return;
+    
+    function toggleSidebar() {
+        const isMobile = window.innerWidth <= 768;
+        
+        if (isMobile) {
+            // En móvil: mostrar/ocultar completamente
+            sidebar.classList.toggle('open');
+            if (sidebarOverlay) {
+                sidebarOverlay.classList.toggle('active');
+            }
+            // Prevenir scroll del body cuando sidebar está abierto
+            if (sidebar.classList.contains('open')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        } else {
+            // En desktop: colapsar/expandir
+            sidebar.classList.toggle('collapsed');
+            // Guardar estado en localStorage
+            const isCollapsed = sidebar.classList.contains('collapsed');
+            localStorage.setItem('sidebarCollapsed', isCollapsed ? 'true' : 'false');
+        }
+    }
+    
+    function closeSidebarOnMobile() {
+        if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
+            sidebar.classList.remove('open');
+            if (sidebarOverlay) {
+                sidebarOverlay.classList.remove('active');
+            }
+            document.body.style.overflow = '';
+        }
+    }
+    
+    // Toggle sidebar al hacer click en el botón
+    sidebarToggle.addEventListener('click', toggleSidebar);
+    
+    // Cerrar sidebar al hacer click en overlay (solo móvil)
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebarOnMobile);
+    }
+    
+    // Cerrar sidebar al hacer click en un nav-item en móvil
+    const navItems = sidebar.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+        item.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                setTimeout(closeSidebarOnMobile, 100); // Pequeño delay para que la navegación funcione
+            }
+        });
+    });
+    
+    // Restaurar estado del sidebar en desktop desde localStorage
+    function restoreSidebarState() {
+        if (window.innerWidth > 768) {
+            const wasCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            if (wasCollapsed) {
+                sidebar.classList.add('collapsed');
+            }
+        }
+    }
+    
+    // Manejar resize - cerrar sidebar móvil si se cambia a desktop
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+            if (sidebarOverlay) {
+                sidebarOverlay.classList.remove('active');
+            }
+            sidebar.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        restoreSidebarState();
+    });
+    
+    // Restaurar estado al cargar la página
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", restoreSidebarState);
+    } else {
+        restoreSidebarState();
+    }
+})();

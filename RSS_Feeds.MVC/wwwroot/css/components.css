@@ -46,27 +46,33 @@
 
 .feed-list-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: 1fr;
     gap: 24px;
-    padding: 0;
+    padding: 24px;
+    align-items: stretch;
 }
 
-@media (max-width: 768px) {
-    .feed-list-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
+/* 2 columnas en tablet pequeña */
+@media (min-width: 640px) {
     .feed-list-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
     }
 }
 
-@media (min-width: 1025px) {
+/* 3 columnas en tablet grande */
+@media (min-width: 1024px) {
     .feed-list-grid {
         grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+}
+
+/* 4 columnas en desktop */
+@media (min-width: 1400px) {
+    .feed-list-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
     }
 }
 

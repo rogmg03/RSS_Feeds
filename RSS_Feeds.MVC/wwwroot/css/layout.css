@@ -10,6 +10,22 @@ html, body {
 .app-shell {
     display: flex;
     height: 100vh;
+    position: relative;
+    overflow: hidden; /* Prevenir scroll del app-shell mismo */
+}
+
+@media (max-width: 768px) {
+    .app-shell {
+        flex-direction: column;
+        overflow-x: hidden;
+        overflow-y: hidden; /* Prevenir scroll del app-shell */
+        min-height: 100vh;
+        height: 100vh;
+        position: relative;
+        /* Asegurar que no corte el bottom-nav */
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
 }
 
 /* =========================
@@ -27,6 +43,30 @@ html, body {
     height: 100vh; 
     position: sticky; 
     top: 0;
+    transition: transform 0.3s ease, width 0.3s ease, left 0.3s ease;
+}
+
+/* Sidebar collapsed en desktop */
+.sidebar.collapsed {
+    width: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Sidebar en móvil */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: -260px; /* Oculto por defecto */
+        z-index: 10000;
+        height: 100vh;
+        transition: left 0.3s ease;
+        display: flex; /* Mostrar cuando esté abierto */
+    }
+    
+    .sidebar.open {
+        left: 0; /* Visible cuando está abierto */
+    }
 }
 
 .sidebar-brand {
@@ -99,6 +139,18 @@ html, body {
     display: flex;
     flex-direction: column;
     min-height: 0;
+    overflow-y: auto; /* Scroll siempre aquí para que sticky funcione */
+}
+
+/* Ajustar main-area en móvil */
+@media (max-width: 768px) {
+    .main-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        overflow-y: auto; /* Mantener scroll aquí */
+    }
 }
 
 /* =========================
@@ -106,6 +158,10 @@ html, body {
 ========================= */
 
 .topbar {
+    position: -webkit-sticky; /* Para Safari */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     height: 64px;
     background: white;
     border-bottom: 1px solid var(--border-light);
@@ -116,12 +172,29 @@ html, body {
     flex-shrink: 0;
 }
 
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .search-box input {
     width: 320px;
     padding: 8px 12px;
     border-radius: 8px;
     border: 1px solid var(--border-light);
     font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .search-box {
+        gap: 8px;
+    }
+    
+    .search-box input {
+        width: 200px;
+        font-size: 13px;
+    }
 }
 
 .user-box {
@@ -139,6 +212,91 @@ html, body {
 }
 
 /* =========================
+   HAMBURGER BUTTON
+========================= */
+
+.hamburger-btn {
+    display: flex;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 8px;
+    color: var(--text-primary);
+    transition: transform 0.2s ease, background 0.2s ease;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+}
+
+.hamburger-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.hamburger-btn:active {
+    transform: scale(0.95);
+}
+
+/* =========================
+   SIDEBAR OVERLAY (Mobile)
+========================= */
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .sidebar-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+}
+
+/* Ocultar overlay en desktop */
+@media (min-width: 769px) {
+    .sidebar-overlay {
+        display: none !important;
+    }
+}
+
+/* Ajustar topbar para móvil */
+@media (max-width: 768px) {
+    .topbar {
+        height: 56px;
+        padding: 0 16px;
+        /* Mantener sticky, solo ajustar altura y padding */
+    }
+
+    .user-box {
+        display: flex; /* Cambiar de none a flex */
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 2px;
+    }
+
+    .user-name {
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .user-email {
+        display: none; /* Ocultar email, mantener nombre */
+        font-size: 11px;
+    }
+}
+
+/* =========================
    CONTENT (SCROLL AQUÍ)
 ========================= */
 
@@ -147,4 +305,95 @@ html, body {
     padding: 24px;
     overflow-y: auto; /*  scroll real */
     min-height: 0;
+}
+
+/* Estilos para main */
+main {
+    flex: 1;
+    min-height: 0;
+    padding: 24px; /* Desktop */
+    /* Sin overflow-y aquí, el scroll está en .main-area */
+}
+
+/* Agregar padding al main en móvil */
+@media (max-width: 768px) {
+    main {
+        padding: 16px;
+        padding-bottom: 80px; /* Espacio para bottom-nav (60px) + padding extra */
+        padding-top: 0;
+    }
+}
+
+/* =========================
+   BOTTOM NAVIGATION (Mobile)
+========================= */
+
+.bottom-nav {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .bottom-nav {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100vw !important;
+        height: 60px !important;
+        min-height: 60px !important;
+        max-height: 60px !important;
+        background: white !important;
+        border-top: 1px solid var(--border-light) !important;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1) !important;
+        z-index: 9999 !important;
+        justify-content: space-around !important;
+        align-items: center !important;
+        padding: 0 8px !important;
+        flex-shrink: 0 !important;
+        margin: 0 !important;
+    }
+
+    .bottom-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        padding: 8px 12px;
+        border-radius: 10px;
+        text-decoration: none;
+        color: var(--text-secondary);
+        transition: background .15s ease, color .15s ease;
+        flex: 1;
+        max-width: 100px;
+    }
+
+    .bottom-nav-item .icon {
+        font-size: 24px;
+        line-height: 1;
+    }
+
+    .bottom-nav-item .label {
+        font-size: 11px;
+        font-weight: 500;
+        line-height: 1;
+    }
+
+    .bottom-nav-item:hover,
+    .bottom-nav-item.active {
+        background: rgba(37, 99, 235, 0.08);
+        color: var(--brand-primary);
+    }
+
+    .bottom-nav-item.danger:hover {
+        background: rgba(239, 68, 68, 0.08);
+        color: var(--brand-danger);
+    }
+
+    .bottom-nav-item.active .label {
+        font-weight: 600;
+    }
 }
