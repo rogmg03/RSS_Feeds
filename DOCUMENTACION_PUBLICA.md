@@ -632,3 +632,4 @@ La arquitectura diseñada permite:
 **Versión del documento:** 1.0  
 **Última actualización:** Enero 2024
 
+
