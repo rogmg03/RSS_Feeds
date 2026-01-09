@@ -347,7 +347,7 @@ sequenceDiagram
 
 1. **Clonar el repositorio**
    ```bash
-   git clone https://github.com/tu-usuario/RSS_Feeds.git
+   git clone https://github.com/rogmg03/RSS_Feeds.git
    cd RSS_Feeds
    ```
 
@@ -557,8 +557,8 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más det
 
 **Tu Nombre**
 
-- GitHub: [@tu-usuario](https://github.com/tu-usuario)
-- LinkedIn: [Tu Perfil](https://linkedin.com/in/tu-perfil)
+- GitHub: [@rogmg03](https://github.com/rogmg03)
+- LinkedIn: [Roger Mora](https://linkedin.com/in/rogmg)
 
 ---
 
@@ -567,6 +567,7 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más det
 - .NET Team por el excelente framework
 - Comunidad de desarrolladores .NET
 - Todos los contribuidores y revisores
+- Profesor de Programación Avanzada Web 
 
 ---
 
